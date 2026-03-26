@@ -1,0 +1,79 @@
+<html>
+<head>
+<style>
+ body{
+    background-color:#999595;
+ }   
+
+</style>
+<title > STUDENTS RANKS BASED ON MARKS </title>
+</head>
+<body>
+  <center>
+     <h1 style="color:rgb(232, 236, 7);">STUDENTS RANK LIST </h1> 
+  </center>  
+  <center>
+ <span style="font-size:20px;">Roll Num:</span> <input  id="rollnum"style="padding:8px;border-radius: 5px;border:none"type="text" placeholder="Enter Roll No">
+ <span style="font-size:20px;">Name:</span>: <input id="name"style="padding:8px;border-radius: 5px;border:none"type="text" placeholder="Enter Name">
+ <span style="font-size:20px;">Math:</span><input id="math"style="padding:8px;border-radius: 5px;border:none"type="text" placeholder="Enter Marks">
+  <span style="font-size:20px;">Science:</span> <input id="science"style="padding:8px;border-radius: 5px;bprder:none"type="text" placeholder="Enter Marks">
+  <span style="font-size:20px;">English:</span><input id="english"style="padding:8px;border-radius: 5px;border:none"type="text" placeholder="Enter Marks">
+
+  <br><br>
+
+  <button style="background:green; color:white; cursor:pointer; border-radius:5px;padding:10px; margin-right:10px;border:none;" onclick="add()">Add Students</button>
+  <button style="background:green; color:white; cursor:pointer; border-radius:5px;padding:10px;border:none" onclick="calculate()">Calculate Rank</button>
+  </center>
+  <br><br><br>
+  <center>
+  <table style="border:2px solid whitesmoke;width:300px" border="2px">
+    <tr style="background-color:deeppink;">
+        <th >Roll Num</th>
+        <th >Name</th>
+        <th>Total</th>
+        <th >Percentage</th>
+        <th >Rank</th>
+    </tr>
+    <tbody id="out"></tbody>
+  </table>
+  </center>
+  <script>
+    let students=[];
+    function add(){
+     let r=document.getElementById("rollnum").value;  
+     let n=document.getElementById("name").value;
+     let m=+document.getElementById("math").value;
+     let s=+document.getElementById("science").value;
+     let e=+document.getElementById("english").value;
+
+     if(m<0 || m>100 || s<0 || s>100 || e<0 || e>100){
+        alert("marks must be between 0 and 100");
+        return;
+     }
+     let exists=students.some(x=>x.roll==r);
+     if(exists){
+        alert("Roll number already exists");
+        return;
+    }
+    
+     let t=m+s+e;
+     let p=t/3;
+     
+     students.push({roll:r,name:n,total:t,per:p});
+     show();
+    }
+    function calculate(){
+        students.sort((a,b)=>b.per-a.per);
+        students.forEach((x,i)=>x.rank=i+1);
+        show();
+    }
+    function show(){
+     let rows="";
+     students.forEach(x=>{
+        rows+="<tr><td>"+x.roll+"</td><td>"+x.name+"</td><td>"+x.total+"</td><td>"+x.per.toFixed(1)+"</td><td>"+(x.rank||"")+"</td></tr>"   
+     });
+      document.getElementById("out").innerHTML=rows;
+    }
+</script>
+</body>
+</html>
